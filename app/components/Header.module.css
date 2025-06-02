@@ -1,0 +1,116 @@
+.header {
+  background-color: var(--brown);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 1rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.02);
+}
+
+.nav {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.navLink {
+  color: var(--bg-color);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  font-size: var(--font-size-sm);
+  position: relative;
+  padding: 0.5rem 0;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.navLink:hover {
+  color: var(--gold);
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .headerContainer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .navLink {
+    font-size: var(--font-size-xs);
+  }
+}
+
+.cartLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-color);
+  transition: all 0.3s ease;
+}
+
+.cartLink:hover {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.cartCount {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--gold);
+  color: var(--brown);
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.cartLink:hover .cartCount {
+  background-color: var(--bg-color);
+  color: var(--brown);
+}
