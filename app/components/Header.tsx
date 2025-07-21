@@ -13,7 +13,14 @@ const Header = () => {
     <header className={styles.header}>
       <div className={`container ${styles.headerContainer}`}>
         <Link href="/" className={styles.logo}>
-          <Image src="/logo.png" alt="Sansai Logo" width={140} height={48} priority />
+          <Image
+            src="/sansai-logo.png"
+            alt="Sansai Logo"
+            width={160}
+            height={192}
+            priority
+            className={styles.logoImage}
+          />
         </Link>
         <nav className={styles.nav}>
           <Link href="/" className={styles.navLink}>

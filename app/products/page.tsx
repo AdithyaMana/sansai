@@ -8,6 +8,7 @@ import SortOptions from "../components/ProductCatalog/SortOptions"
 import ProductGrid from "../components/ProductCatalog/ProductGrid"
 import Pagination from "../components/ProductCatalog/Pagination"
 import ProductDetail from "../components/ProductCatalog/ProductDetail"
+import productsData from "../data/products.json"
 
 interface Product {
   id: string
@@ -25,12 +26,6 @@ interface Product {
 interface Category {
   name: string
   count: number
-}
-
-interface PriceRange {
-  min: number
-  max: number
-  label: string
 }
 
 export default function Products() {
@@ -55,11 +50,10 @@ export default function Products() {
   ]
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const loadProducts = () => {
       try {
-        // In a real app, this would be an API call
-        const response = await fetch("/api/products")
-        const data = await response.json()
+        // Use the imported JSON data directly
+        const data = productsData as Product[]
         setProducts(data)
 
         // Extract categories
@@ -77,36 +71,12 @@ export default function Products() {
         setFilteredProducts(data)
         setIsLoading(false)
       } catch (error) {
-        console.error("Error fetching products:", error)
-        // For demo purposes, use mock data
-        import("../data/products.json")
-          .then((module) => {
-            const data = module.default
-            setProducts(data)
-
-            // Extract categories
-            const categoryMap = data.reduce((acc: Record<string, number>, product: Product) => {
-              acc[product.category] = (acc[product.category] || 0) + 1
-              return acc
-            }, {})
-
-            const categoryList = Object.entries(categoryMap).map(([name, count]) => ({
-              name,
-              count: count as number,
-            }))
-
-            setCategories(categoryList)
-            setFilteredProducts(data)
-            setIsLoading(false)
-          })
-          .catch((error) => {
-            console.error("Error loading mock data:", error)
-            setIsLoading(false)
-          })
+        console.error("Error loading products:", error)
+        setIsLoading(false)
       }
     }
 
-    fetchProducts()
+    loadProducts()
   }, [])
 
   useEffect(() => {

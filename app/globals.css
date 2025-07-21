@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --bg-color: #f8f3e9;
   --text-color: #3a2e22;
@@ -57,7 +61,7 @@ body {
 }
 
 body {
-  padding-top: 80px; /* Add space for fixed header */
+  padding-top: 86px; /* Increased from 72px to accommodate larger logo */
 }
 
 h1,
@@ -306,6 +310,16 @@ a:hover {
   .btn {
     padding: 0.6rem 1.2rem;
   }
+
+  body {
+    padding-top: 80px;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    padding-top: 110px; /* More space for stacked header layout */
+  }
 }
 
 @media (max-width: 480px) {
@@ -324,6 +338,10 @@ a:hover {
 
   .btn {
     padding: 0.5rem 1rem;
+  }
+
+  body {
+    padding-top: 106px;
   }
 }
 

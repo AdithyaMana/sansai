@@ -1,5 +1,6 @@
 .productsHeader {
   margin-bottom: 2rem;
+  padding-top: 4rem; /* Added to push content below fixed header */
 }
 
 .searchContainer {
@@ -60,6 +61,10 @@
 }
 
 @media (max-width: 768px) {
+  .productsHeader {
+    padding-top: 3rem; /* Adjust for smaller screens */
+  }
+
   .productLayout {
     grid-template-columns: 1fr;
   }

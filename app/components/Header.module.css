@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -14,21 +14,37 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 70px; /* Increased from 60px */
 }
 
 .logo {
   display: flex;
   align-items: center;
   transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
 .logo:hover {
   transform: scale(1.02);
 }
 
+.logoImage {
+  height: auto;
+  max-height: 84px; /* Increased from 48px */
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Makes the black logo white */
+  transition: filter 0.3s ease;
+}
+
+.logo:hover .logoImage {
+  filter: brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(35deg); /* Golden tint on hover */
+}
+
 .nav {
   display: flex;
   gap: 2.5rem;
+  align-items: center;
 }
 
 .navLink {
@@ -62,23 +78,6 @@
   width: 100%;
 }
 
-@media (max-width: 768px) {
-  .headerContainer {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
-  }
-
-  .navLink {
-    font-size: var(--font-size-xs);
-  }
-}
-
 .cartLink {
   position: relative;
   display: flex;
@@ -86,11 +85,14 @@
   justify-content: center;
   color: var(--bg-color);
   transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 4px;
 }
 
 .cartLink:hover {
   color: var(--gold);
   transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .cartCount {
@@ -108,9 +110,114 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  border: 2px solid var(--brown);
 }
 
 .cartLink:hover .cartCount {
   background-color: var(--bg-color);
   color: var(--brown);
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .logoImage {
+    max-height: 64px; /* Increased from 44px */
+  }
+
+  .nav {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem 0;
+  }
+
+  .headerContainer {
+    min-height: 64px; /* Increased from 56px */
+  }
+
+  .logoImage {
+    max-height: 58px; /* Increased from 40px */
+  }
+
+  .nav {
+    gap: 1.5rem;
+  }
+
+  .navLink {
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 640px) {
+  .headerContainer {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+  }
+
+  .logoImage {
+    max-height: 54px; /* Increased from 36px */
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+
+  .navLink {
+    font-size: var(--font-size-xs);
+    padding: 0.25rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoImage {
+    max-height: 50px; /* Increased from 32px */
+  }
+
+  .nav {
+    gap: 1rem;
+  }
+
+  .navLink {
+    font-size: 0.7rem;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .logoImage {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Dark mode support (if needed in future) */
+@media (prefers-color-scheme: dark) {
+  .logoImage {
+    filter: brightness(0) invert(1);
+  }
+}
+
+/* Print styles */
+@media print {
+  .header {
+    position: static;
+    background: white;
+    box-shadow: none;
+  }
+
+  .logoImage {
+    filter: none;
+    max-height: 60px;
+  }
+
+  .nav {
+    display: none;
+  }
 }

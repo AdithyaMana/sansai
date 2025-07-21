@@ -27,13 +27,14 @@
   display: flex;
   overflow-x: auto;
   gap: 1.5rem;
-  padding: 1rem 0.5rem 1.5rem; /* Adjusted padding for better alignment */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  padding: 1rem 0.5rem 1.5rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   scroll-behavior: smooth;
   width: 100%;
   cursor: grab;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  align-items: stretch; /* Ensure all cards have same height */
 }
 
 .certificationsScroll::-webkit-scrollbar {
@@ -45,8 +46,9 @@
 }
 
 .certCard {
-  min-width: 350px;
-  max-width: 350px;
+  min-width: 380px; /* Increased and made consistent */
+  max-width: 380px;
+  min-height: 200px; /* Set minimum height for consistency */
   display: flex;
   background-color: var(--bg-color);
   border-radius: var(--border-radius);
@@ -57,7 +59,6 @@
   align-items: flex-start;
   border: 1px solid rgba(139, 69, 19, 0.08);
   cursor: pointer;
-  height: 100%; /* Ensure consistent height */
 }
 
 .certCard:hover {
@@ -95,6 +96,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start; /* Align content to top */
+  height: 100%;
 }
 
 .certName {
@@ -104,6 +107,7 @@
   transition: color 0.3s ease;
   font-weight: 600;
   letter-spacing: var(--letter-spacing-tight);
+  line-height: 1.3; /* Consistent line height */
 }
 
 .certCard:hover .certName {
@@ -116,6 +120,9 @@
   line-height: var(--line-height-relaxed);
   margin-bottom: 0;
   opacity: 0.9;
+  flex-grow: 1; /* Fill remaining space */
+  display: flex;
+  align-items: flex-start; /* Align text to top */
 }
 
 @media (max-width: 768px) {
@@ -124,8 +131,9 @@
   }
 
   .certCard {
-    min-width: 300px;
-    max-width: 300px;
+    min-width: 340px;
+    max-width: 340px;
+    min-height: 180px; /* Slightly smaller on mobile but still consistent */
     padding: 1.5rem;
   }
 
@@ -141,11 +149,12 @@
 
 @media (max-width: 480px) {
   .certCard {
-    min-width: 260px;
-    max-width: 260px;
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 220px; /* Taller on mobile due to stacked layout */
     flex-direction: column;
     text-align: center;
-    padding: 1.25rem;
+    padding: 1.5rem;
   }
 
   .logoContainer {
