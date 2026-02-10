@@ -7,19 +7,19 @@ const Services = () => {
       title: "Global Export",
       description:
         "We export high-quality South Indian products to over 30 countries worldwide, ensuring authentic flavors reach global markets.",
-      icon: "export-placeholder.svg",
+      icon: "/placeholder.svg?height=60&width=60&text=Export",
     },
     {
       title: "Quality Assurance",
       description:
         "Our rigorous quality control processes ensure that every product meets international standards before reaching our customers.",
-      icon: "quality-placeholder.svg",
+      icon: "/placeholder.svg?height=60&width=60&text=Quality",
     },
     {
       title: "Custom Solutions",
       description:
         "We provide tailored export solutions to meet your specific requirements, from packaging to private labeling and bulk orders.",
-      icon: "custom-placeholder.svg",
+      icon: "/placeholder.svg?height=60&width=60&text=Custom",
     },
   ]
 
@@ -39,7 +39,7 @@ const Services = () => {
               style={{ animationDelay: `${0.2 + index * 0.1}s` }}
             >
               <Image
-                src={`/icons/${service.icon}`}
+                src={service.icon || "/placeholder.svg"}
                 alt={service.title}
                 width={60}
                 height={60}

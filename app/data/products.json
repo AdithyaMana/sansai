@@ -626,5 +626,17 @@
     "benefits": ["Strong bond", "Water-resistant", "Non-toxic formula"],
     "origin": "Karnataka, India",
     "inStock": true
+  },
+  {
+    "id": "maggi-2-minute-noodles",
+  "name": "Maggi 2-Minute Noodles",
+  "category": "Instant Foods",
+  "price": 2.49,
+  "unit": "280g (Pack of 4)",
+  "image": "/products/maggi-noodles.jpg",
+  "description": "The beloved instant noodles that are ready in just 2 minutes. A classic choice for a quick snack or a light meal, famous for its signature masala tastemaker.",
+  "benefits": ["Ready in 2 minutes", "Classic masala flavor", "Versatile for different recipes", "Fortified with Iron"],
+  "origin": "Made in India",
+  "inStock": true
   }
 ]

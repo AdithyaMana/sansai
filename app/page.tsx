@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="animate-fadeIn">
       <Hero
-        backgroundImage="/hero-image.jpg"
+        backgroundImage="/hero-ship.jpg"
         title="Sansai: Bringing the Best of South India to the World"
         subtitle="Experience the authentic flavors and traditions of South India"
         buttonText="Explore Our Products"
