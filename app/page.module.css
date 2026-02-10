@@ -1,0 +1,83 @@
+.hero {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/hero-placeholder.jpg");
+  background-size: cover;
+  background-position: center;
+  color: var(--bg-color);
+  text-align: center;
+  padding: 12rem 0 8rem;
+  margin-bottom: 4rem;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: var(--bg-color);
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.highlights,
+.services {
+  padding: 4rem 0;
+}
+
+.productGrid,
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.productCard,
+.serviceCard {
+  background-color: var(--bg-color);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.productCard:hover,
+.serviceCard:hover {
+  transform: translateY(-5px);
+}
+
+.productCard img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.productCard h3,
+.serviceCard h3 {
+  padding: 1rem;
+  color: var(--brown);
+  font-size: 1.2rem;
+}
+
+.serviceCard {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--saffron);
+}
+
+.serviceCard img {
+  margin-bottom: 1rem;
+}
+
+.serviceCard p {
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+}

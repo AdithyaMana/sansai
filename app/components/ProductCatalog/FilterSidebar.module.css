@@ -1,0 +1,109 @@
+.sidebar {
+  width: 100%;
+  background-color: var(--bg-color);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+}
+
+.filterHeader h3 {
+  font-size: 1.2rem;
+  color: var(--brown);
+  margin: 0;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: var(--saffron);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.clearButton:hover {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+.filterSection {
+  margin-bottom: 1.5rem;
+}
+
+.filterTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(139, 69, 19, 0.1);
+  transition: color 0.3s ease;
+}
+
+.filterTitle:hover {
+  color: var(--saffron);
+}
+
+.filterTitle h4 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.filterList {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+}
+
+.filterItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+.filterItem:hover {
+  background-color: rgba(255, 153, 51, 0.1);
+  padding-left: 0.75rem;
+}
+
+.filterItem.active {
+  background-color: rgba(255, 153, 51, 0.2);
+  color: var(--brown);
+  font-weight: 500;
+}
+
+.count {
+  background-color: rgba(139, 69, 19, 0.1);
+  border-radius: 12px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.8rem;
+  color: var(--brown);
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: sticky;
+    top: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+  }
+}
