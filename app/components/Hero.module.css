@@ -1,0 +1,280 @@
+.hero {
+  position: relative;
+  color: var(--bg-color);
+  text-align: center;
+  padding: 12rem 0 8rem;
+  margin-bottom: 4rem;
+  overflow: hidden;
+  min-height: 70vh;
+  /* Enhanced fallback background */
+  background: linear-gradient(135deg, #2d5a27 0%, #4a7c59 50%, #2d5a27 100%);
+  animation: heroFadeIn 2s ease-out;
+}
+
+/* Enhanced fallback styling when image fails */
+.heroFallback {
+  background: linear-gradient(135deg, #2d5a27 0%, #4a7c59 30%, #6b8e23 50%, #4a7c59 70%, #2d5a27 100%);
+}
+
+.heroFallback::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.05) 50%, transparent 60%);
+  z-index: 1;
+  animation: subtlePattern 15s ease-in-out infinite;
+}
+
+.shipBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  animation: gentleFloat 8s ease-in-out infinite;
+}
+
+.shipImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.8) contrast(1.1) saturate(1.2);
+  animation: subtleZoom 12s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.imageLoaded {
+  opacity: 1;
+}
+
+.imageLoading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.greenOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(45, 90, 39, 0.75) 0%,
+    rgba(74, 124, 89, 0.65) 30%,
+    rgba(45, 90, 39, 0.7) 70%,
+    rgba(45, 90, 39, 0.8) 100%
+  );
+  z-index: 2;
+}
+
+.textOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%);
+  z-index: 3;
+}
+
+.content {
+  position: relative;
+  z-index: 4;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: var(--font-size-5xl);
+  margin-bottom: 1.5rem;
+  position: relative;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-tight);
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.subtitle {
+  font-size: var(--font-size-lg);
+  margin-bottom: 2.5rem;
+  position: relative;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: var(--line-height-relaxed);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-normal);
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.heroBtn {
+  position: relative;
+  z-index: 5;
+  padding: 1rem 2.5rem;
+  font-size: var(--font-size-base);
+  letter-spacing: var(--letter-spacing-wider);
+  background: linear-gradient(45deg, #d4af37, #f4d03f);
+  border: none;
+  color: #2d5a27;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.heroBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(45deg, #f4d03f, #d4af37);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 8rem 0 6rem;
+    min-height: 60vh;
+  }
+
+  .title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-md);
+    margin-bottom: 2rem;
+  }
+
+  .heroBtn {
+    padding: 0.9rem 2rem;
+    font-size: var(--font-size-sm);
+  }
+
+  .loadingSpinner {
+    width: 32px;
+    height: 32px;
+    border-width: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 7rem 0 5rem;
+    min-height: 50vh;
+  }
+
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-base);
+    margin-bottom: 1.75rem;
+  }
+
+  .heroBtn {
+    padding: 0.8rem 1.8rem;
+  }
+
+  .loadingSpinner {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Animations */
+@keyframes gentleFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes subtleZoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes heroFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes subtlePattern {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  .shipBackground,
+  .shipImage,
+  .loadingSpinner {
+    animation: none;
+  }
+
+  .hero {
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .greenOverlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .textOverlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}

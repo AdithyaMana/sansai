@@ -1,0 +1,96 @@
+.sortContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sortLabel {
+  margin-right: 0.75rem;
+  font-weight: 500;
+  color: var(--brown);
+}
+
+.dropdown {
+  position: relative;
+  min-width: 180px;
+}
+
+.dropdownToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-color);
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dropdownToggle:hover {
+  border-color: var(--gold);
+}
+
+.rotated {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 0.25rem;
+  background-color: var(--bg-color);
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  padding: 0.5rem 0;
+  list-style: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdownItem {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdownItem:hover {
+  background-color: rgba(255, 153, 51, 0.1);
+}
+
+.dropdownItem.active {
+  background-color: rgba(255, 153, 51, 0.2);
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .sortContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sortLabel {
+    margin-bottom: 0.5rem;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+}
