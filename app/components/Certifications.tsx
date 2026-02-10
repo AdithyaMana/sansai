@@ -1,8 +1,9 @@
 "use client"
 
 import Image from "next/image"
+import { useCallback, useRef } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import styles from "./Certifications.module.css"
-import { useAutoScroll } from "../utils/useAutoScroll"
 
 interface Certification {
   id: string
@@ -57,11 +58,42 @@ const certifications: Certification[] = [
 ]
 
 const Certifications = () => {
-  // Use slightly slower scrolling for certifications since they contain more text
-  const { scrollContainerRef, setIsHovering } = useAutoScroll({
-    pixelsPerScroll: 2.5,
-    scrollInterval: 16,
-  })
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  const scrollLeft = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current
+      const scrollAmount = 400
+
+      // If we're at or near the beginning, jump to the end
+      if (container.scrollLeft <= scrollAmount) {
+        container.scrollLeft = container.scrollWidth - container.clientWidth
+      } else {
+        container.scrollBy({
+          left: -scrollAmount,
+          behavior: "smooth",
+        })
+      }
+    }
+  }, [])
+
+  const scrollRight = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current
+      const scrollAmount = 400
+      const maxScroll = container.scrollWidth - container.clientWidth
+
+      // If we're at or near the end, jump to the beginning
+      if (container.scrollLeft >= maxScroll - scrollAmount) {
+        container.scrollLeft = 0
+      } else {
+        container.scrollBy({
+          left: scrollAmount,
+          behavior: "smooth",
+        })
+      }
+    }
+  }, [])
 
   return (
     <section className={styles.certifications}>
@@ -73,34 +105,47 @@ const Certifications = () => {
         </p>
 
         <div className={styles.scrollContainer}>
+          <button className={styles.scrollButton} onClick={scrollLeft} aria-label="Scroll left">
+            <ChevronLeft size={24} />
+          </button>
+
           <div
             className={styles.certificationsScroll}
             ref={scrollContainerRef}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            role="region"
+            aria-label="Quality certifications carousel"
           >
             {certifications.map((cert, index) => (
               <div
                 key={cert.id}
                 className={`${styles.certCard} animate-fadeIn`}
                 style={{ animationDelay: `${0.2 + index * 0.1}s` }}
+                role="article"
+                aria-labelledby={`cert-${cert.id}-title`}
               >
                 <div className={styles.logoContainer}>
                   <Image
                     src={cert.logo || "/placeholder.svg?height=80&width=80"}
-                    alt={`${cert.name} certification`}
+                    alt={`${cert.name} certification logo`}
                     width={80}
                     height={80}
                     className={styles.logo}
+                    loading={index < 3 ? "eager" : "lazy"}
                   />
                 </div>
                 <div className={styles.certContent}>
-                  <h3 className={styles.certName}>{cert.name}</h3>
+                  <h3 className={styles.certName} id={`cert-${cert.id}-title`}>
+                    {cert.name}
+                  </h3>
                   <p className={styles.certDescription}>{cert.description}</p>
                 </div>
               </div>
             ))}
           </div>
+
+          <button className={styles.scrollButton} onClick={scrollRight} aria-label="Scroll right">
+            <ChevronRight size={24} />
+          </button>
         </div>
       </div>
     </section>

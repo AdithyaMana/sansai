@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Sansai - Premium Spices & Ingredients",
   description: "Discover premium quality spices, ingredients, and hardware products at Sansai.",
-    generator: 'v0.dev'
+    generator: 'v0.app'
 }
 
 /**

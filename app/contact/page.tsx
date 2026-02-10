@@ -71,9 +71,8 @@ export default function Contact() {
             <h2>Get in Touch</h2>
             <p>We'd love to hear from you. Feel free to reach out with any questions or inquiries.</p>
             <ul>
-              <li>Email: info@sansai.com</li>
-              <li>Phone: +91 123 456 7890</li>
-              <li>Address: 123 Spice Street, Chennai, India</li>
+              <li>Email: sansaitraders@gmail.com</li>
+              <li>Phone: +91 9444462820</li>
             </ul>
           </div>
         </div>

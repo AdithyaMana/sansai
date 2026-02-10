@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import styles from "./Hero.module.css"
 
@@ -16,11 +19,68 @@ const Hero = ({
   buttonText = "Explore Our Products",
   buttonLink = "/products",
 }: HeroProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
+  const [imageSrc, setImageSrc] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Preload the image to ensure it's available
+    const img = new Image()
+
+    img.onload = () => {
+      setImageLoaded(true)
+      setImageSrc(backgroundImage)
+      setImageError(false)
+    }
+
+    img.onerror = () => {
+      console.warn(`Failed to load hero image: ${backgroundImage}`)
+      setImageError(true)
+      setImageLoaded(false)
+      // Try fallback placeholder
+      const fallbackImg = new Image()
+      fallbackImg.onload = () => {
+        setImageSrc("/placeholder.svg?height=800&width=1200&text=Cargo+Ship")
+        setImageLoaded(true)
+      }
+      fallbackImg.onerror = () => {
+        // Complete fallback - no image
+        setImageSrc(null)
+        setImageLoaded(true)
+      }
+      fallbackImg.src = "/placeholder.svg?height=800&width=1200&text=Cargo+Ship"
+    }
+
+    img.src = backgroundImage
+  }, [backgroundImage])
+
+  const handleImageError = () => {
+    console.warn("Hero image failed to render, using fallback")
+    setImageError(true)
+    setImageSrc(null)
+  }
+
   return (
-    <section className={styles.hero}>
+    <section className={`${styles.hero} ${imageError ? styles.heroFallback : ""}`}>
       {/* Ship background image covering entire area */}
       <div className={styles.shipBackground}>
-        <img src="/hero-ship.jpg" alt="Cargo ship representing global trade" className={styles.shipImage} />
+        {imageSrc && imageLoaded && (
+          <img
+            src={imageSrc || "/placeholder.svg"}
+            alt="Cargo ship representing global trade"
+            className={`${styles.shipImage} ${imageLoaded ? styles.imageLoaded : ""}`}
+            onError={handleImageError}
+            loading="eager"
+            decoding="async"
+          />
+        )}
+
+        {/* Loading state */}
+        {!imageLoaded && !imageError && (
+          <div className={styles.imageLoading}>
+            <div className={styles.loadingSpinner}></div>
+          </div>
+        )}
       </div>
 
       {/* Green overlay to maintain brand colors and text readability */}

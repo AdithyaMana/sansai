@@ -6,6 +6,28 @@
   margin-bottom: 4rem;
   overflow: hidden;
   min-height: 70vh;
+  /* Enhanced fallback background */
+  background: linear-gradient(135deg, #2d5a27 0%, #4a7c59 50%, #2d5a27 100%);
+  animation: heroFadeIn 2s ease-out;
+}
+
+/* Enhanced fallback styling when image fails */
+.heroFallback {
+  background: linear-gradient(135deg, #2d5a27 0%, #4a7c59 30%, #6b8e23 50%, #4a7c59 70%, #2d5a27 100%);
+}
+
+.heroFallback::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.05) 50%, transparent 60%);
+  z-index: 1;
+  animation: subtlePattern 15s ease-in-out infinite;
 }
 
 .shipBackground {
@@ -15,6 +37,7 @@
   right: 0;
   bottom: 0;
   z-index: 1;
+  animation: gentleFloat 8s ease-in-out infinite;
 }
 
 .shipImage {
@@ -23,6 +46,30 @@
   object-fit: cover;
   object-position: center;
   filter: brightness(0.8) contrast(1.1) saturate(1.2);
+  animation: subtleZoom 12s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.imageLoaded {
+  opacity: 1;
+}
+
+.imageLoading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 .greenOverlay {
@@ -124,6 +171,12 @@
     padding: 0.9rem 2rem;
     font-size: var(--font-size-sm);
   }
+
+  .loadingSpinner {
+    width: 32px;
+    height: 32px;
+    border-width: 2px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -144,19 +197,84 @@
   .heroBtn {
     padding: 0.8rem 1.8rem;
   }
+
+  .loadingSpinner {
+    width: 28px;
+    height: 28px;
+  }
 }
 
-/* Subtle animation for the ship background */
+/* Animations */
 @keyframes gentleFloat {
   0%,
   100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
   }
 }
 
-.shipBackground {
-  animation: gentleFloat 8s ease-in-out infinite;
+@keyframes subtleZoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes heroFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes subtlePattern {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  .shipBackground,
+  .shipImage,
+  .loadingSpinner {
+    animation: none;
+  }
+
+  .hero {
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .greenOverlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .textOverlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
 }
