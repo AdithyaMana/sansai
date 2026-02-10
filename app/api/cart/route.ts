@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     const { data: cart, error: cartError } = await supabase
       .from('shopping_carts')
       .select('*')
-      .eq('user_id', userId)
+      .eq('session_id', userId)
       .single();
 
     if (cartError && cartError.code !== 'PGRST116') {
@@ -29,15 +29,27 @@ export async function GET(request: NextRequest) {
 
     const { data: items, error: itemsError } = await supabase
       .from('cart_items')
-      .select('*')
+      .select('id, quantity, product_id, products(id, name, image, price, unit)')
       .eq('cart_id', cart.id);
 
     if (itemsError) throw itemsError;
 
-    const total = items?.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0;
+    // Format items for client
+    const formattedItems = (items || []).map((item: any) => ({
+      cartItemId: item.id,
+      id: item.product_id,
+      productId: item.product_id,
+      quantity: item.quantity,
+      name: item.products?.name || 'Unknown',
+      image: item.products?.image || '/placeholder.svg',
+      price: item.products?.price || 0,
+      unit: item.products?.unit || 'per kg',
+    }));
+
+    const total = formattedItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
 
     return NextResponse.json({
-      items: items || [],
+      items: formattedItems,
       total,
       cartId: cart.id,
     });
@@ -56,7 +68,7 @@ export async function POST(request: NextRequest) {
     const userId = request.headers.get('x-user-id') || 'anonymous';
     const { productId, quantity, price, name, image } = await request.json();
 
-    if (!productId || !quantity || !price || !name) {
+    if (!productId || !quantity) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -67,14 +79,14 @@ export async function POST(request: NextRequest) {
     let cart = await supabase
       .from('shopping_carts')
       .select('*')
-      .eq('user_id', userId)
+      .eq('session_id', userId)
       .single();
 
     if (cart.error && cart.error.code === 'PGRST116') {
       // Cart doesn't exist, create one
       const newCart = await supabase
         .from('shopping_carts')
-        .insert([{ user_id: userId }])
+        .insert([{ session_id: userId }])
         .select()
         .single();
 
@@ -111,9 +123,6 @@ export async function POST(request: NextRequest) {
             cart_id: cartId,
             product_id: productId,
             quantity,
-            price,
-            name,
-            image,
           },
         ]);
 
