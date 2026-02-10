@@ -15,7 +15,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 async function seedProducts() {
   try {
     // Read products from JSON file
-    const productsPath = path.join(process.cwd(), 'app/data/products.json');
+    const productsPath = '/app/data/products.json';
+    console.log('[v0] Reading products from:', productsPath);
     const productsData = JSON.parse(fs.readFileSync(productsPath, 'utf-8'));
 
     console.log(`[v0] Found ${productsData.length} products to seed`);
