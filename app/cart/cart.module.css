@@ -2,6 +2,37 @@
   margin-top: 2rem;
 }
 
+.successMessage {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  animation: slideInRight 0.3s ease-out;
+  z-index: 100;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .successMessage {
+    left: 20px;
+    right: 20px;
+  }
+}
+
 .emptyCart {
   text-align: center;
   padding: 4rem 2rem;

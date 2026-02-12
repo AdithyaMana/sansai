@@ -36,14 +36,11 @@ export default function Footer() {
           <div className={styles.footerSection}>
             <h3 className={styles.footerTitle}>Contact Us</h3>
             <address className={styles.footerAddress}>
-              <p>123 Spice Road</p>
-              <p>Chennai, Tamil Nadu 600001</p>
-              <p>India</p>
               <p>
-                <a href="tel:+919876543210">+91 98765 43210</a>
+                <a href="tel:+919876543210">+91 9444462820</a>
               </p>
               <p>
-                <a href="mailto:info@sansai.com">info@sansai.com</a>
+                <a href="mailto:info@sansai.com">sansaitraders@gmail.com</a>
               </p>
             </address>
           </div>
