@@ -19,7 +19,7 @@ export default function Cart() {
     updateQuantity(id, newQuantity)
   }
 
-  const handleEnquiryClick = () => {
+  const handlePlaceOrderClick = () => {
     setIsModalOpen(true)
   }
 
@@ -39,8 +39,8 @@ export default function Cart() {
 
       const cartTotal = cart.reduce((total, item) => total + (item.price || 0) * item.quantity, 0)
 
-      // Submit enquiry with phone number and cart items
-      const response = await fetch("/api/enquiries", {
+      // Submit order with phone number and cart items
+      const response = await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,13 +54,13 @@ export default function Cart() {
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || "Failed to submit enquiry")
+        throw new Error(errorData.error || "Failed to place order")
       }
 
       const data = await response.json()
 
       // Show success message and clear cart
-      setSuccessMessage(data.message)
+      setSuccessMessage(data.message || "Order placed successfully! Our team will contact you shortly.")
       setIsModalOpen(false)
       setTimeout(() => {
         clearCart()
@@ -174,8 +174,8 @@ export default function Cart() {
               Interested in the products in your cart? Send us an enquiry and our team will contact you with more
               information about availability, pricing, and shipping options.
             </p>
-            <button className={styles.checkoutButton} onClick={handleEnquiryClick} disabled={isCheckingOut}>
-              {isCheckingOut ? "Sending..." : "Enquire About Products"}
+            <button className={styles.checkoutButton} onClick={handlePlaceOrderClick} disabled={isCheckingOut}>
+              {isCheckingOut ? "Processing..." : "Place Order"}
             </button>
             <p className={styles.secureCheckout}>
               <span className={styles.secureIcon}>📧</span> We'll respond within 24 hours
