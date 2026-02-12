@@ -5,30 +5,91 @@ import Image from "next/image"
 import Link from "next/link"
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag } from "lucide-react"
 import { useCart } from "../context/CartContext"
+import { PhoneNumberModal } from "../components/PhoneNumberModal"
 import styles from "./cart.module.css"
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart()
   const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [successMessage, setSuccessMessage] = useState("")
 
   const handleQuantityChange = (id: string, currentQuantity: number, change: number) => {
     const newQuantity = Math.max(1, currentQuantity + change)
     updateQuantity(id, newQuantity)
   }
 
-  const handleEnquiry = () => {
-    setIsCheckingOut(true)
-    // Simulate enquiry process
-    setTimeout(() => {
-      // In a real app, you would send the enquiry to the server
-      alert("Thank you for your enquiry! Our team will contact you soon about the products in your cart.")
+  const handleEnquiryClick = () => {
+    setIsModalOpen(true)
+  }
+
+  const handlePhoneSubmit = async (phoneNumber: string) => {
+    try {
+      setIsCheckingOut(true)
+
+      // Prepare cart items data
+      const cartData = cart.map((item) => ({
+        productId: item.productId || item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price || 0,
+        image: item.image,
+        unit: item.unit,
+      }))
+
+      const cartTotal = cart.reduce((total, item) => total + (item.price || 0) * item.quantity, 0)
+
+      // Submit enquiry with phone number and cart items
+      const response = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phoneNumber,
+          cartItems: cartData,
+          cartTotal,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to submit enquiry")
+      }
+
+      const data = await response.json()
+
+      // Show success message and clear cart
+      setSuccessMessage(data.message)
+      setIsModalOpen(false)
+      setTimeout(() => {
+        clearCart()
+        setSuccessMessage("")
+      }, 2000)
+    } catch (error) {
+      console.error("[v0] Enquiry submission error:", error)
+      alert(error instanceof Error ? error.message : "Failed to submit enquiry")
+    } finally {
       setIsCheckingOut(false)
-    }, 2000)
+    }
   }
 
   return (
     <div className="container">
+      {successMessage && (
+        <div className={styles.successMessage}>
+          <p>{successMessage}</p>
+        </div>
+      )}
+
       <h1 className={`section-title ${styles.pageTitle}`}>Your Shopping Cart</h1>
+
+      <PhoneNumberModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handlePhoneSubmit}
+        isLoading={isCheckingOut}
+      />
 
       {cart.length === 0 ? (
         <div className={styles.emptyCart}>
@@ -113,7 +174,7 @@ export default function Cart() {
               Interested in the products in your cart? Send us an enquiry and our team will contact you with more
               information about availability, pricing, and shipping options.
             </p>
-            <button className={styles.checkoutButton} onClick={handleEnquiry} disabled={isCheckingOut}>
+            <button className={styles.checkoutButton} onClick={handleEnquiryClick} disabled={isCheckingOut}>
               {isCheckingOut ? "Sending..." : "Enquire About Products"}
             </button>
             <p className={styles.secureCheckout}>
