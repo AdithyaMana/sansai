@@ -1,5 +1,3 @@
-'use server';
-
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
@@ -20,7 +18,7 @@ export async function GET() {
 
     return NextResponse.json({ products: products || [] });
   } catch (error) {
-    console.error('[v0] Products GET error:', error);
+    console.error('Products GET error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch products' },
       { status: 500 }

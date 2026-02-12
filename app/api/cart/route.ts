@@ -1,5 +1,3 @@
-'use server';
-
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -54,7 +52,7 @@ export async function GET(request: NextRequest) {
       cartId: cart.id,
     });
   } catch (error) {
-    console.error('[v0] Cart GET error:', error);
+    console.error('Cart GET error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch cart' },
       { status: 500 }
@@ -66,11 +64,20 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const userId = request.headers.get('x-user-id') || 'anonymous';
-    const { productId, quantity, price, name, image } = await request.json();
+    const { productId, quantity } = await request.json();
 
     if (!productId || !quantity) {
       return NextResponse.json(
         { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    // Validate quantity is a positive integer
+    const validQuantity = Math.floor(Math.abs(Number(quantity)));
+    if (validQuantity <= 0) {
+      return NextResponse.json(
+        { error: 'Quantity must be a positive number' },
         { status: 400 }
       );
     }
@@ -110,7 +117,7 @@ export async function POST(request: NextRequest) {
       // Update quantity
       const { error } = await supabase
         .from('cart_items')
-        .update({ quantity: existing.data.quantity + quantity })
+        .update({ quantity: existing.data.quantity + validQuantity })
         .eq('id', existing.data.id);
 
       if (error) throw error;
@@ -122,7 +129,7 @@ export async function POST(request: NextRequest) {
           {
             cart_id: cartId,
             product_id: productId,
-            quantity,
+            quantity: validQuantity,
           },
         ]);
 
@@ -131,7 +138,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('[v0] Cart POST error:', error);
+    console.error('Cart POST error:', error);
     return NextResponse.json(
       { error: 'Failed to add item to cart' },
       { status: 500 }
@@ -163,7 +170,7 @@ export async function PUT(request: NextRequest) {
       // Update quantity
       const { error } = await supabase
         .from('cart_items')
-        .update({ quantity })
+        .update({ quantity: Math.floor(Math.abs(Number(quantity))) })
         .eq('id', itemId);
 
       if (error) throw error;
@@ -171,7 +178,7 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('[v0] Cart PUT error:', error);
+    console.error('Cart PUT error:', error);
     return NextResponse.json(
       { error: 'Failed to update cart item' },
       { status: 500 }
@@ -201,7 +208,7 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('[v0] Cart DELETE error:', error);
+    console.error('Cart DELETE error:', error);
     return NextResponse.json(
       { error: 'Failed to delete cart item' },
       { status: 500 }

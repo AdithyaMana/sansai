@@ -1,5 +1,3 @@
-'use server';
-
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -19,10 +17,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate phone number format (basic validation)
-    if (phoneNumber.length < 10 || phoneNumber.length > 15) {
+    // Validate phone number format
+    const cleanPhone = String(phoneNumber).replace(/[^\d+]/g, '');
+    if (cleanPhone.length < 10 || cleanPhone.length > 15) {
       return NextResponse.json(
         { error: 'Phone number must be between 10-15 digits' },
+        { status: 400 }
+      );
+    }
+
+    // Validate cart items
+    if (cartItems.length === 0) {
+      return NextResponse.json(
+        { error: 'Cart cannot be empty' },
         { status: 400 }
       );
     }
@@ -32,9 +39,9 @@ export async function POST(request: NextRequest) {
       .from('enquiries')
       .insert([
         {
-          phone_number: phoneNumber,
+          phone_number: cleanPhone,
           cart_items: cartItems,
-          cart_total: cartTotal || 0,
+          cart_total: Math.abs(Number(cartTotal) || 0),
           status: 'pending',
         },
       ])
@@ -42,11 +49,9 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('[v0] Enquiry creation error:', error);
+      console.error('Enquiry creation error:', error);
       throw error;
     }
-
-    console.log('[v0] Enquiry created successfully:', enquiry);
 
     return NextResponse.json({
       success: true,
@@ -54,7 +59,7 @@ export async function POST(request: NextRequest) {
       message: 'Your enquiry has been received. We will contact you shortly.',
     });
   } catch (error) {
-    console.error('[v0] Enquiry submission error:', error);
+    console.error('Enquiry submission error:', error);
     return NextResponse.json(
       { error: 'Failed to submit enquiry' },
       { status: 500 }

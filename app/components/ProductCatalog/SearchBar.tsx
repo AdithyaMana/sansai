@@ -2,8 +2,8 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { Search } from "lucide-react"
+import { useState, useCallback } from "react"
+import { Search, X } from "lucide-react"
 import styles from "./SearchBar.module.css"
 
 interface SearchBarProps {
@@ -14,23 +14,46 @@ interface SearchBarProps {
 const SearchBar = ({ onSearch, placeholder = "Search products..." }: SearchBarProps) => {
   const [query, setQuery] = useState("")
 
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setQuery(value)
+      onSearch(value)
+    },
+    [onSearch]
+  )
+
+  const handleClear = useCallback(() => {
+    setQuery("")
+    onSearch("")
+  }, [onSearch])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSearch(query)
   }
 
   return (
     <form className={styles.searchBar} onSubmit={handleSubmit}>
+      <div className={styles.searchIcon}>
+        <Search size={18} />
+      </div>
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleChange}
         placeholder={placeholder}
         className={styles.searchInput}
       />
-      <button type="submit" className={styles.searchButton} aria-label="Search">
-        <Search size={20} />
-      </button>
+      {query && (
+        <button
+          type="button"
+          className={styles.clearButton}
+          onClick={handleClear}
+          aria-label="Clear search"
+        >
+          <X size={16} />
+        </button>
+      )}
     </form>
   )
 }

@@ -81,7 +81,7 @@ const ProductCatalog = ({ products, title = "Featured Products", showTitle = tru
               <ChevronLeft size={24} />
             </button>
 
-            <div className={styles.productsScroll} ref={(el) => (scrollContainerRefs.current[category] = el)}>
+            <div className={styles.productsScroll} ref={(el) => { scrollContainerRefs.current[category] = el }}>
               {categoryProducts.map((product, productIndex) => (
                 <div
                   key={product.id}

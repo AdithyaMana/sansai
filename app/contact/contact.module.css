@@ -14,7 +14,9 @@
 .form {
   background-color: var(--bg-color);
   padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow-md);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(139, 69, 19, 0.08);
 }
 
 .formGroup {
@@ -25,20 +27,49 @@
   display: block;
   margin-bottom: 0.5rem;
   color: var(--brown);
+  font-weight: 500;
+  font-size: var(--font-size-sm);
 }
 
 .formGroup input,
 .formGroup textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--brown);
-  background-color: var(--bg-color);
+  border: 1px solid rgba(139, 69, 19, 0.2);
+  background-color: white;
   color: var(--text-color);
   font-size: 1rem;
+  border-radius: var(--border-radius);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.formGroup input::placeholder,
+.formGroup textarea::placeholder {
+  color: rgba(58, 46, 34, 0.4);
 }
 
 .formGroup textarea {
   height: 150px;
+  resize: vertical;
+}
+
+.status {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  background-color: rgba(19, 136, 8, 0.08);
+  color: var(--green);
+  border: 1px solid rgba(19, 136, 8, 0.15);
 }
 
 .contactInfo {
@@ -64,10 +95,16 @@
 .contactInfo ul li {
   margin-bottom: 1rem;
   color: var(--brown);
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
   .content {
     flex-direction: column;
+    gap: 2rem;
+  }
+
+  .form {
+    padding: 1.5rem;
   }
 }

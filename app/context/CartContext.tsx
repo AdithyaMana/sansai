@@ -36,7 +36,7 @@ interface CartContextType {
   addToCart: (item: CartItem) => Promise<void>
   removeFromCart: (id: string) => Promise<void>
   updateQuantity: (id: string, quantity: number) => Promise<void>
-  clearCart: () => void
+  clearCart: () => Promise<void>
   getCartCount: () => number
   notification: CartNotification
   hideNotification: () => void
@@ -276,10 +276,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   /**
-   * Clear all items from the cart
+   * Clear all items from the cart (local + database)
    */
-  const clearCart = () => {
+  const clearCart = async () => {
     logger.debug("Clearing cart")
+    try {
+      const userId = getUserId()
+
+      // Delete cart items from database
+      const cartResponse = await fetch("/api/cart", {
+        headers: { "x-user-id": userId },
+      })
+
+      if (cartResponse.ok) {
+        const data = await cartResponse.json()
+        // Delete each item from the cart
+        for (const item of data.items || []) {
+          if (item.cartItemId) {
+            await fetch(`/api/cart?itemId=${item.cartItemId}`, {
+              method: "DELETE",
+            })
+          }
+        }
+      }
+    } catch (error) {
+      logger.error("Failed to clear cart from database", error instanceof Error ? error : new Error(String(error)))
+    }
+
     setCart([])
   }
 

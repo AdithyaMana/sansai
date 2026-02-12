@@ -1,10 +1,10 @@
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
+import { signAdminToken, verifyAdminToken } from "@/lib/adminAuth"
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-const jwtSecret = process.env.SUPABASE_JWT_SECRET!
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
@@ -18,11 +18,17 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === "login") {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email)) {
+        return NextResponse.json({ error: "Invalid email format" }, { status: 400 })
+      }
+
       // Find admin user
       const { data: admin, error: findError } = await supabase
         .from("admin_users")
         .select("*")
-        .eq("email", email)
+        .eq("email", email.toLowerCase().trim())
         .single()
 
       if (findError || !admin) {
@@ -35,19 +41,19 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
       }
 
-      // Generate simple JWT token
-      const token = Buffer.from(JSON.stringify({ id: admin.id, email: admin.email })).toString("base64")
+      // Generate signed JWT token
+      const token = await signAdminToken({ id: admin.id, email: admin.email })
 
       return NextResponse.json({
         message: "Login successful",
         token,
-        admin: { id: admin.id, email: admin.email, name: admin.name },
+        admin: { id: admin.id, email: admin.email, name: admin.full_name },
       })
     }
 
     return NextResponse.json({ error: "Invalid action" }, { status: 400 })
   } catch (error) {
-    console.error("[v0] Auth error:", error)
+    console.error("Auth error:", error)
     return NextResponse.json({ error: "Authentication failed" }, { status: 500 })
   }
 }
@@ -55,28 +61,15 @@ export async function POST(request: NextRequest) {
 // Verify token
 export async function GET(request: NextRequest) {
   try {
-    const authHeader = request.headers.get("authorization")
-    if (!authHeader?.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
+    const admin = await verifyAdminToken(request)
 
-    const token = authHeader.slice(7)
-    const decoded = JSON.parse(Buffer.from(token, "base64").toString())
-
-    // Verify admin exists
-    const { data: admin, error } = await supabase
-      .from("admin_users")
-      .select("id, email, name")
-      .eq("id", decoded.id)
-      .single()
-
-    if (error || !admin) {
+    if (!admin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     return NextResponse.json({ admin, valid: true })
   } catch (error) {
-    console.error("[v0] Token verification error:", error)
+    console.error("Token verification error:", error)
     return NextResponse.json({ error: "Invalid token" }, { status: 401 })
   }
 }

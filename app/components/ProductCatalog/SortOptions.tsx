@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { ChevronDown } from "lucide-react"
 import styles from "./SortOptions.module.css"
 
@@ -20,6 +20,21 @@ const SortOptions = ({ options, onSortChange, defaultValue = "featured" }: SortO
   const [selectedOption, setSelectedOption] = useState(
     options.find((option) => option.value === defaultValue) || options[0],
   )
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Close on outside click
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [isOpen])
 
   const handleSelect = (option: SortOption) => {
     setSelectedOption(option)
@@ -28,17 +43,17 @@ const SortOptions = ({ options, onSortChange, defaultValue = "featured" }: SortO
   }
 
   return (
-    <div className={styles.sortContainer}>
+    <div className={styles.sortContainer} ref={dropdownRef}>
       <div className={styles.sortLabel}>Sort by:</div>
       <div className={styles.dropdown}>
         <button
-          className={styles.dropdownToggle}
+          className={`${styles.dropdownToggle} ${isOpen ? styles.open : ""}`}
           onClick={() => setIsOpen(!isOpen)}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
           {selectedOption.label}
-          <ChevronDown size={16} className={isOpen ? styles.rotated : ""} />
+          <ChevronDown size={16} className={`${styles.chevron} ${isOpen ? styles.rotated : ""}`} />
         </button>
 
         {isOpen && (

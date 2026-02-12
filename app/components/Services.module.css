@@ -43,13 +43,23 @@
   border-color: rgba(139, 69, 19, 0.15);
 }
 
-.serviceIcon {
-  margin-bottom: 1.5rem;
-  transition: transform 0.5s ease;
+.serviceIconWrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  transition: transform 0.5s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 153, 51, 0.25);
 }
 
-.serviceCard:hover .serviceIcon {
+.serviceCard:hover .serviceIconWrapper {
   transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(255, 153, 51, 0.35);
 }
 
 .serviceCard h3 {

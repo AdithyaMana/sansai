@@ -37,10 +37,10 @@ export default function Footer() {
             <h3 className={styles.footerTitle}>Contact Us</h3>
             <address className={styles.footerAddress}>
               <p>
-                <a href="tel:+919876543210">+91 9444462820</a>
+                <a href="tel:+919444462820">+91 9444462820</a>
               </p>
               <p>
-                <a href="mailto:info@sansai.com">sansaitraders@gmail.com</a>
+                <a href="mailto:sansaitraders@gmail.com">sansaitraders@gmail.com</a>
               </p>
             </address>
           </div>

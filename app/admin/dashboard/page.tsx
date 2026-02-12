@@ -8,15 +8,15 @@ import styles from "./dashboard.module.css"
 interface Order {
   id: string
   customer_phone: string
-  items: Array<{
+  order_items: Array<{
     productId: string
     name: string
     quantity: number
     price: number
   }>
-  total_amount: number
-  status: "pending" | "confirmed" | "processing" | "completed" | "cancelled"
-  notes: string
+  order_total: number
+  order_status: "pending" | "confirmed" | "processing" | "completed" | "cancelled"
+  special_notes: string
   created_at: string
 }
 
@@ -73,7 +73,7 @@ export default function AdminDashboard() {
     let filtered = allOrders
 
     if (status !== "all") {
-      filtered = filtered.filter((order) => order.status === status)
+      filtered = filtered.filter((order) => order.order_status === status)
     }
 
     if (search) {
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
         (order) =>
           order.customer_phone.includes(search) ||
           order.id.includes(search) ||
-          order.items.some((item) => item.name.toLowerCase().includes(search.toLowerCase()))
+          order.order_items.some((item) => item.name.toLowerCase().includes(search.toLowerCase()))
       )
     }
 
@@ -120,7 +120,7 @@ export default function AdminDashboard() {
 
       if (response.ok) {
         const updatedOrders = orders.map((order) =>
-          order.id === orderId ? { ...order, status: newStatus as any } : order
+          order.id === orderId ? { ...order, order_status: newStatus as any } : order
         )
         setOrders(updatedOrders)
         filterOrders(updatedOrders, searchQuery, statusFilter)
@@ -183,53 +183,56 @@ export default function AdminDashboard() {
             <div className={styles.empty}>No orders found</div>
           ) : (
             <div className={styles.ordersGrid}>
-              {filteredOrders.map((order) => (
-                <div key={order.id} className={styles.orderCard}>
-                  <div className={styles.orderHeader}>
-                    <div>
-                      <h3 className={styles.orderId}>Order #{order.id.slice(0, 8)}</h3>
-                      <p className={styles.phone}>{order.customer_phone}</p>
+              {filteredOrders.map((order) => {
+                const status = order.order_status || "pending"
+                return (
+                  <div key={order.id} className={styles.orderCard}>
+                    <div className={styles.orderHeader}>
+                      <div>
+                        <h3 className={styles.orderId}>Order #{order.id.slice(0, 8)}</h3>
+                        <p className={styles.phone}>{order.customer_phone}</p>
+                      </div>
+                      <span className={`${styles.statusBadge} ${styles[status]}`}>
+                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                      </span>
                     </div>
-                    <span className={`${styles.statusBadge} ${styles[order.status]}`}>
-                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                    </span>
-                  </div>
 
-                  <div className={styles.orderItems}>
-                    <p className={styles.itemsLabel}>Items ({order.items.length}):</p>
-                    <ul className={styles.itemsList}>
-                      {order.items.map((item, idx) => (
-                        <li key={idx} className={styles.item}>
-                          {item.quantity}x {item.name}
-                          <span className={styles.price}>₹{(item.price * item.quantity).toLocaleString()}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className={styles.orderFooter}>
-                    <div className={styles.total}>
-                      <span>Total:</span>
-                      <span className={styles.amount}>₹{order.total_amount.toLocaleString()}</span>
+                    <div className={styles.orderItems}>
+                      <p className={styles.itemsLabel}>Items ({order.order_items?.length || 0}):</p>
+                      <ul className={styles.itemsList}>
+                        {order.order_items?.map((item, idx) => (
+                          <li key={idx} className={styles.item}>
+                            {item.quantity}x {item.name}
+                            <span className={styles.price}>₹{(item.price * item.quantity).toLocaleString()}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
-                      className={styles.statusSelect}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="confirmed">Confirmed</option>
-                      <option value="processing">Processing</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
-                  </div>
 
-                  <p className={styles.timestamp}>
-                    {new Date(order.created_at).toLocaleString()}
-                  </p>
-                </div>
-              ))}
+                    <div className={styles.orderFooter}>
+                      <div className={styles.total}>
+                        <span>Total:</span>
+                        <span className={styles.amount}>₹{order.order_total.toLocaleString()}</span>
+                      </div>
+                      <select
+                        value={status}
+                        onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                        className={styles.statusSelect}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </div>
+
+                    <p className={styles.timestamp}>
+                      {new Date(order.created_at).toLocaleString()}
+                    </p>
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>

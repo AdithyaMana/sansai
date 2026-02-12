@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Sansai - Premium Spices & Ingredients",
   description: "Discover premium quality spices, ingredients, and hardware products at Sansai.",
-    generator: 'v0.app'
+  generator: 'v0.app'
 }
 
 /**
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <ErrorBoundary>
           <CartProvider>
             <Header />

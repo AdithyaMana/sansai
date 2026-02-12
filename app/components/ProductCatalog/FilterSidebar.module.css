@@ -1,23 +1,24 @@
 .sidebar {
   width: 100%;
-  background-color: var(--bg-color);
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   padding: 1.5rem;
   margin-bottom: 2rem;
+  border: 1px solid rgba(139, 69, 19, 0.06);
 }
 
 .filterHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+  border-bottom: 1px solid rgba(139, 69, 19, 0.1);
 }
 
 .filterHeader h3 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--brown);
   margin: 0;
 }
@@ -26,9 +27,10 @@
   background: none;
   border: none;
   color: var(--saffron);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .clearButton:hover {
@@ -37,7 +39,7 @@
 }
 
 .filterSection {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .filterTitle {
@@ -46,8 +48,8 @@
   align-items: center;
   cursor: pointer;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(139, 69, 19, 0.1);
-  transition: color 0.3s ease;
+  border-bottom: 1px solid rgba(139, 69, 19, 0.06);
+  transition: color 0.2s ease;
 }
 
 .filterTitle:hover {
@@ -55,43 +57,50 @@
 }
 
 .filterTitle h4 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin: 0;
 }
 
 .filterList {
   list-style: none;
   padding: 0;
-  margin: 0.75rem 0 0;
+  margin: 0.5rem 0 0;
 }
 
 .filterItem {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0;
+  align-items: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 4px;
-  padding: 0.5rem;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
 }
 
 .filterItem:hover {
-  background-color: rgba(255, 153, 51, 0.1);
-  padding-left: 0.75rem;
+  background-color: rgba(255, 153, 51, 0.06);
 }
 
 .filterItem.active {
-  background-color: rgba(255, 153, 51, 0.2);
+  background-color: rgba(255, 153, 51, 0.12);
   color: var(--brown);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .count {
-  background-color: rgba(139, 69, 19, 0.1);
-  border-radius: 12px;
-  padding: 0.1rem 0.5rem;
-  font-size: 0.8rem;
+  background-color: rgba(139, 69, 19, 0.06);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
   color: var(--brown);
+  font-weight: 500;
+  min-width: 28px;
+  text-align: center;
+}
+
+.filterItem.active .count {
+  background-color: rgba(255, 153, 51, 0.2);
 }
 
 @media (min-width: 768px) {
@@ -104,6 +113,6 @@
 @media (max-width: 768px) {
   .sidebar {
     margin-bottom: 1.5rem;
-    padding: 1rem;
+    padding: 1.25rem;
   }
 }
